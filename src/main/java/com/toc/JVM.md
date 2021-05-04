@@ -600,6 +600,25 @@ public static final int v = 8080;
 
 #### <a name="42">解析</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 - 解析阶段是虚拟机将常量池内的符号引用替换为直接引用的过程。解析动作主要针对类或接口、字段、类方法、接口方法、方法类型、方法句柄和调用限定符7类符号引用进行。
+- 符号引用：以一组符号来描述引用的目标，可以是任意形式的字面量，字面量形式定义在jvm规范的Class文件中
+- 直接引用：可以是直接指向目标的指针、相对偏移量或是一个能间接定位到目标的句柄。
+- 类或接口的解析： 假设当前代码所处的类为D，未解析的符号引用N解析未C的直接引用
+  - C不是数组类型，JVM会把代表N的全限定名转递给D的类加载器去加载这个类C
+  - C是数组类型，并且数组的元素类型为对象
+- 字段解析：对字段表内class_index项中索引的CONSTANT_Class_info 符号进行引用解析
+  - ifC本身就包含了简单名称和字段描述符都与目标相匹配的字段，则返回这个字段的直接引用
+  - elif 在C中实现了接口，将会按照集成关系从下网上递归搜索各个借口和它的父接口
+  - elif C不是java.lang.Object将会按照继承关系从下网上递归搜索其父类
+  - else 抛出java.lang.NoSuchFieldError
+- 类方法解析：解析出class_index项中索引的方法所属的类或接口的符号引用，后序的类方搜索
+  - 如果索引的C是接口，则抛出java.lang.IncompatibleClassChangeError
+  - 在类C中查找是否有简单名称和描述符都与目标相匹配的方法
+  - 在父类中递归查找
+  - 在类C实现的接口列表及他们的父接口之中递归查找，如果存在，则C为抽象类，抛出java.lang.AbstractMethodError异常
+  - 否则NoSuchMethodError
+  - 如果权限不对，则抛出java.lang.IllegalAccessError
+- 接口方法解析：
+  - TODO
 
 #### <a name="43">初始化</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
