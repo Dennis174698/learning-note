@@ -7,7 +7,7 @@
 3. xxx应用及使用场景是什么？
 
 ## Java相关
-- [Java基础](https://github.com/rbmonster/learning-note/blob/master/src/main/java/com/toc/JAVA_BASE.md)
+- [Java基础](https://github.com/Dennis174698/learning-note/blob/master/src/main/java/com/toc/JAVA_BASE.md)
 - [Java集合类](https://github.com/rbmonster/learning-note/blob/master/src/main/java/com/toc/COLLECTION.md)
 - [Java IO](https://github.com/rbmonster/learning-note/tree/master/src/main/java/com/toc/JAVA_IO.md)
 - [Java虚拟机](https://github.com/rbmonster/learning-note/blob/master/src/main/java/com/toc/JVM.md)
