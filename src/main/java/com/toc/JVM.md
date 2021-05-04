@@ -562,6 +562,9 @@ public class MyClassLoader extends ClassLoader {
   - 通过全类名获取定义此类的二进制字节流
   - 将字节流所代表的静态存储结构转换为方法区的运行时数据结构
   - 在内存中生成一个代表该类的 Class 对象,作为方法区这些数据的访问入口
+- 数组类本身不通过类加载器创建，直接由jvm创建。但数组类的元素类型需要类加载器创建。
+- class从zip包中读取，为jar，war等格式的基础
+- 从网络中获取,applet
 
 #### <a name="40">验证</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 - 验证的范围：文件格式、元数据、字节码、符号引用验证
