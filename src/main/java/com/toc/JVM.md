@@ -568,6 +568,21 @@ public class MyClassLoader extends ClassLoader {
 
 #### <a name="40">验证</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 - 验证的范围：文件格式、元数据、字节码、符号引用验证
+- 文件格式：
+  - 是否以魔数0xCAFEBABE 开头
+  - 主次版本号是否在当前虚拟机处理范围之内
+  - 常量池的常量中是否有不被支持的常量类型（检查常量tag标志）
+  - ...
+- 元数据验证：
+  - 是否有父类
+  - 父类是否集成了不允许被继承的类（final）
+  - 。。。
+- 字节码验证：
+  - 保证方法体中的类型转换是有效的，如可以把父类对象赋值给子类数据类型，不合法
+  - ...
+- 符号引用验证：
+  - 将符号引用转换为直接引用，在解析阶段中发生
+  - 符号引用中的类、字段、方法的访问性（private、protected、pubulic、default）
 
 #### <a name="41">准备</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 准备阶段是正式为类变量分配内存并设置类变量初始值的阶段，这些内存都将在方法区中分配。对于该阶段有以下几点需要注意：
