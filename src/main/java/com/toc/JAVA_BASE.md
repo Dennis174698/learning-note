@@ -180,6 +180,7 @@ java 8 为char[] 数据
 - 数据：声明数据为常量，可以是编译时常量，也可以是在运行时被初始化后不能被改变的常量。
 - 对于基本类型，final 使数值不变；
 - 对于引用类型，final 使引用不变，也就不能引用其它对象，但是被引用的对象本身是可以修改的。
+- 在jvm常量池中
 ```
 final StringBuilder stringBuilder = new StringBuilder("123");
         System.out.println(stringBuilder);
