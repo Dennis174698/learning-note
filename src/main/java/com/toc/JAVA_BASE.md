@@ -415,6 +415,26 @@ Java 中有三个访问权限修饰符：private、protected 以及 public，
 ### <a name="22">super关键字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 - 访问父类的构造函数：可以使用 super() 函数访问父类的构造函数，从而委托父类完成一些初始化的工作。
 - 访问父类的成员：如果子类重写了父类的某个方法，可以通过使用 super 关键字来引用父类的方法实现。
+```
+class Animal {
+    String color = "white";
+}
+
+class Dog extends Animal {
+    String color = "black";
+
+    void printColor() {
+        System.out.println(color);// prints color of Dog class
+        System.out.println(super.color);// prints color of Animal class
+    }
+}
+
+class TestSuper1 {
+    public static void main(String args[]) {
+        Dog d = new Dog();
+        d.printColor();
+    }
+```
 
 ### <a name="23">重写与重载</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 #### <a name="24">重写（Override）：</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
