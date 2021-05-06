@@ -27,6 +27,15 @@
 
 ## <a name="1">Open Feign 源码</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
+
+- 服务的注册和发现
+- 服务的负载均衡
+- 服务的容错
+- 服务网关
+- 服务配置的统一管理
+- 链路追踪
+- 事实日志
+
 1. `@EnableFeignClients` 开启FeignClients，主要通过`@Import({FeignClientsRegistrar.class})`注解注入到IOC容器
 2. `FeignClientsRegistrar` 通过继承`ImportBeanDefinitionRegistrar`的registerBeanDefinitions方法扫描使用`@Feign`的相关接口及类
 3. 将扫描到的接口获取其对应的相关属性，注入到`FeignClientFactoryBean`的对象定义中，并设置为`@primary`，并注入到IOC容器的bean定义。
