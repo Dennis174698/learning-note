@@ -135,6 +135,25 @@ String、StringBuilder、StringBuffer三者的执行效率：
 1. 操作少量的数据: 适用String
 2. 单线程操作字符串缓冲区下操作大量数据: 适用StringBuilder
 3. 多线程操作字符串缓冲区下操作大量数据: 适用StringBuffer
+4. 可变不可变
+
+　　String：是字符串常量,在修改时不会改变自身,若修改,等于重新生成新的字符串对象。
+
+　　StringBuffer：在修改时会改变对象自身，每次操作都是对StringBuffer对象自身进行修改，不是生成新的对象。使用场景：用于对字符串经常改变的情况下。主要方法有： append（），insert（），delete（），replace（），reverse（）等。
+
+5. 线程是否安全
+
+　　String：对象定义后不可变，线程安全。
+
+　　StringBuffer：是线程安全的（对调用方法加入同步锁），执行效率较慢，适用于多线程下操作字符串缓冲区大量数据。
+
+　　StringBuilder：是线程不安全的，适用于单线程下操作字符串缓冲区大量数据。
+
+6. 共同点：
+
+　　StringBuilder和StringBuffer有共同的父类AbstractStringBuilder（抽象类）。
+
+　　StringBuilder和StringBuffer的方法都会调用AbstractStringBuilder中的公共方法，如super.append（...）,只是StringBuffer会在方法上加上synchronized关键字进行同步。
 ```
     String a = "hello2"; 　  
     String b = "hello";       
