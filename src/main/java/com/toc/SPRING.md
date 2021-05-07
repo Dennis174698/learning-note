@@ -108,6 +108,23 @@ Spring AOP 属于运行时增强，而 AspectJ 是编译时增强。 Spring AOP 
 
 ## <a name="8">Spring 中的 bean 的作用域有哪些?</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 - singleton : 唯一 bean 实例，Spring 中的 bean 默认都是单例的。
+- 单例写法：
+```
+第二种（懒汉，线程安全）：
+
+Java代码
+
+public class Singleton {  
+ private static Singleton instance;  
+ private Singleton (){}  
+ public static synchronized Singleton getInstance() {  
+ if (instance == null) {  
+        instance = new Singleton();  
+    }  
+ return instance;  
+    }  
+}
+```
 - prototype : 每次请求都会创建一个新的 bean 实例。如跟请**求状态有关**的对象，就不能使用单例，需要使用多例保证线程安全。
   - > 之所以用多例，是为了防止**并发问题**；即一个请求改变了对象的状态，此时对象又处理另一个请求，而之前请求对**对象状态**的改变导致了对象对另一个请求做了错误的处理；
   - > 使用@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE,proxyMode = ScopedProxyMode.TARGET_CLASS)。ScopedProxyMode.TARGET_CLASS是字节码级别多例,设置多例的代理模式使用一次就会产生一个运行时字节新对象
