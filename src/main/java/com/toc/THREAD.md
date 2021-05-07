@@ -34,6 +34,8 @@
 
 ## <a name="1">线程状态</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 ![avatar](https://github.com/rbmonster/learning-note/blob/master/src/main/java/com/learning/concurrent/picture/threadState.jpg)
+- 线程与进程的区别：
+   - 线程是比进程更轻量级的调度执行单位，可以把一个进程的资源分配和执行调度分开，各个线程既可以共享进程资源（内存地址，文件I/O等），又可以独立调度（线程是CPU调度的基本单位）。
 
 - 新建（NEW）：创建后尚未启动。
 - 可运行（RUNABLE）：正在 Java 虚拟机中运行。但是在操作系统层面，它可能处于运行状态，也可能等待资源调度（例如处理器资源），资源调度完成就进入运行状态。所以该状态的可运行是指可以被运行，具体有没有运行要看底层操作系统的资源调度。
