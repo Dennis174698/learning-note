@@ -27,7 +27,7 @@
 - [Spring Security](https://github.com/Dennis174698/learning-note/blob/master/src/main/java/com/toc/SPRING-SECURITY.md)
 
 ## 中间件
-- [Redis](https://github.com/Dennis174698/Dennis174698/blob/master/src/main/java/com/toc/REDIS.md)
+- [Redis](https://github.com/Dennis174698/blob/master/src/main/java/com/toc/REDIS.md)
 - [分布式基本概念](https://github.com/Dennis174698/learning-note/blob/master/src/main/java/com/toc/DISTRIBUTED-SYSTEM.md)
 - [ZooKeeper](https://github.com/Dennis174698/learning-note/blob/master/src/main/java/com/toc/ZOOKEEPER.md)
 - [消息队列(包含MQ)](https://github.com/Dennis174698/learning-note/blob/master/src/main/java/com/toc/MESSAGEQUEUE.md)
