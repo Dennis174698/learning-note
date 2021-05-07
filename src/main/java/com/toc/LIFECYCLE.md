@@ -15,6 +15,7 @@
 ## <a name="1">接口介绍</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 ### <a name="2">Bean的完整生命周期及方法调用</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+![avatar](https://pic3.zhimg.com/v2-2a8565eb02d88025d0fbe1015ef323d6_r.jpg)
 方法可以划分为以下几类：
 1. Bean自身的方法：这个包括了Bean本身调用的方法和通过配置文件中<bean>的init-method和destroy-method指定的方法
 2. Bean级生命周期接口方法：这个包括了BeanNameAware、BeanFactoryAware、InitializingBean和DisposableBean这些接口的方法
