@@ -548,6 +548,27 @@ QUEUED
 
 ### <a name="38">LRU实现</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 常规的LRU算法会维护一个双向链表，用来表示访问关系，且需要额外的存储存放 next 和 prev 指针，牺牲比较大的存储空间。
+```python
+class LRUCache(collections.OrderedDict):
+
+    def __init__(self, capacity: int):
+        super().__init__()
+        self.capacity = capacity
+
+
+    def get(self, key: int) -> int:
+        if key not in self:
+            return -1
+        self.move_to_end(key)
+        return self[key]
+
+    def put(self, key: int, value: int) -> None:
+        if key in self:
+            self.move_to_end(key)
+        self[key] = value
+        if len(self) > self.capacity:
+            self.popitem(last=False)
+```
 
 Redis的实现LRU会维护一个全局的LRU时钟，并且每个键中也有一个时钟，每次访问键的时候更新时钟值。
 
