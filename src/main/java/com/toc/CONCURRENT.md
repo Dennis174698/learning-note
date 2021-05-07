@@ -166,6 +166,13 @@ class Account {
 }
 ```
 - 一个线程可以从挂起状态变为可运行状态（也就是被唤醒），即使线程没有被其他线程调用notify()/notifyAll() 方法进行通知，或被中断，或者等待超时，这就是所谓的【虚假唤醒】。虽然虚假唤醒很少发生，但要防患于未然，做法就是不停的去测试该线程被唤醒条件是否满足
+- volatile 和 synchronized 区别：
+  - volatile关键字的本质是告诉jvm，该变量在寄存器中的值是不确定的，需要在主存中读取，而synchronized关键字是锁住当前变量，只有当前线程可以访问，其他线程等待。
+  - 1. volatile只能作用于变量，而synchronized可以作用于变量、方法和代码块
+  - 2. 多线程访问volatile不会发生阻塞，而synchronized关键字可能发生阻塞。
+  - 3. volatile能够保证数据的可见性，就是在多个线程之间是可见的，不能保证原子性，而synchronized关键字都可以保证。
+  - 4. volatile关键字主要解决的是多个线程之间的可见性，而synchronized关键字保证的是多个线程访问资源的同步性。
+  
 - volatile 非阻塞 ， synchronize阻塞
 - volatile 与 synchronized 在处理哪些问题是相对等价的？
     - 如果写入变量值不依赖变量当前值，那么就可以用 volatile。
