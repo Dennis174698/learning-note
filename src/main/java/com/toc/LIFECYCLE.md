@@ -16,17 +16,17 @@
 
 ### <a name="2">Bean的完整生命周期及方法调用</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 ![avatar](https://pic3.zhimg.com/v2-2a8565eb02d88025d0fbe1015ef323d6_r.jpg)
-1.解析类得到BeanDefinition
-2.如果有多个构造方法,则要推断构造方法
-3.确定好构造方法后,进行实例化得到一个对象
-4.对对象中的加了@Autowired注解的属性进行属性填充
-5.回调Aware方法,比如BeanNameAware,BeanFactoryAware
-7.调用初始化方法
-6.调用BeanPostProcessor的初始化前的方法
-8.调用BeanPostProcessor的初始化后的方法,在这里会进行AOP
-9.如果当前创建的bean是单例的则会把bean放入单例池
-10.使用bean
-11.Spring容器关闭时调用DisposableBean中destory()方法
+- 解析类得到BeanDefinition
+- 如果有多个构造方法,则要推断构造方法
+- 确定好构造方法后,进行实例化得到一个对象
+- 对对象中的加了@Autowired注解的属性进行属性填充
+- 回调Aware方法,比如BeanNameAware,BeanFactoryAware
+- 调用初始化方法
+- 调用BeanPostProcessor的初始化前的方法
+- 调用BeanPostProcessor的初始化后的方法,在这里会进行AOP
+- 如果当前创建的bean是单例的则会把bean放入单例池
+- 使用bean
+- Spring容器关闭时调用DisposableBean中destory()方法
 
 方法可以划分为以下几类：
 1. Bean自身的方法：这个包括了Bean本身调用的方法和通过配置文件中<bean>的init-method和destroy-method指定的方法
