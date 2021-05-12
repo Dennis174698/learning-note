@@ -31,7 +31,7 @@
 &emsp;<a href="#28">7. spring 中的线程池</a>  
 &emsp;&emsp;<a href="#29">7.1. 异步编程的例子：</a>  
 &emsp;&emsp;<a href="#30">8.0 循环打印ABC的例子：</a>
-&emsp;&emsp;<a href="#31">8.1 死锁：</a>
+&emsp;&emsp;<a href="#31">8.1 死锁</a>
 # <a name="0">java 并发线程相关</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 ## <a name="1">线程状态</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
