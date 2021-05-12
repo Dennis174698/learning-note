@@ -33,7 +33,11 @@
 &emsp;&emsp;<a href="#30">5.1. 如何选用集合?</a>  
 &emsp;&emsp;<a href="#31">5.2. ArrayList 带参数及不带参数</a>  
 &emsp;&emsp;<a href="#32">5.3. Arrays.asList() 方法</a>  
-&emsp;&emsp;<a href="#33">5.4. hash 冲突解决方案</a>  
+&emsp;&emsp;<a href="#33">5.4. hash 冲突解决方案</a>
+&emsp;&emsp;<a href="#34">5.5. List和Set的区别</a>
+&emsp;&emsp;<a href="#35">5.6. ArrayList和LinkedList区别</a>
+&emsp;&emsp;<a href="#36">5.7.HashMap和HashTable有什么区别?其底层实现是什么?</a>
+&emsp;&emsp;<a href="#37">5.8. ConcurrentHashMap原理,jdk7和jdk8版本的区别</a>
 # <a name="0">集合</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 ![avatar](https://github.com/rbmonster/learning-note/blob/master/src/main/java/com/learning/basic/picture/collectionfamily.jpg)
 - 集合主要分为两大类，一个实现collection接口的，一个是实现了Map接口的。
@@ -578,3 +582,31 @@ public class Arrays{
     > 这种方法是同时构造多个不同的哈希函数：Hi=RH1（key） i=1，2，…，k。当哈希地址Hi=RH1（key）发生冲突时，再计算Hi=RH2（key）……，直到冲突不再产生。
 
 - [Hash冲突的四种解决办法](https://www.cnblogs.com/gongcheng-/p/10894205.html#_label1_0)
+### <a name="34">hash List和Set的区别</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+- List:有序,按对象进入的顺序保存对象,可重复,允许多个Null元素对象,可以使用Iterator取出所有元素,在逐一遍历,还可以使用get(int index)获取指定下标的元素
+- Set:无序,不可重复,最多允许有一个Null元素对象,取元素时只能用Iterator接口取得所有元素,在逐一遍历各个元素
+### <a name="35">ArrayList和LinkedList区别</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+- ArrayList:基于动态数组,连续内存存储,适合下标访问(随机访问),扩容机制:因为数组长度固定,超出长度存数据时需要新建数组,然后将老数组的数据拷贝到新数组,如果不是尾部插入数据还会涉及到元素的移动(往后复制一份,插入新元素),使用尾插法并指定初始容量可以极大提升性能、甚至超过linkedList(需要创建大量的node对象)
+- LinkedList:基于链表,可以存储在分散的内存中,适合做数据插入及删除操作,不适合查询:需要逐一遍历遍历LinkedList必须使用iterator不能使用for循环,因为每次for循环体内通过get(i)取得某一元素时都需要对list重新进行遍历,性能消耗极大。另外不要试图使用indexOf等返回元素索引,并利用其进行遍历,使用indexlOf对list进行了遍历,当结果为空时会遍历整个列表。
+### <a name="36">HashMap和HashTable有什么区别?其底层实现是什么?</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+区别 :
+- (1)HashMap方法没有synchronized修饰,线程非安全,HashTable线程安全;
+- (2)HashMap允许key和value为null,而HashTable不允许
+- 2.底层实现:数组+链表实现
+  -jdk8开始链表高度到8、数组长度超过64,链表转变为红黑树,元素以内部类Node节点存在计算key的hash值,二次hash然后对数组长度取模,对应到数组下标,如果没有产生hash冲突(下标位置没有元素),则直接创建Node存入数组,
+  -如果产生hash冲突,先进行equal比较,相同则取代该元素,不同,则判断链表高度插入链表,链表高度达到8,并且数组长度到64则转变为红黑树,长度低于6则将红黑树转回链表
+  -key为null,存在下标0的位置
+  
+### <a name="36">ConcurrentHashMap原理,jdk7和jdk8版本的区别</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+jdk7:
+- 数据结构:ReentrantLock+Segment+HashEntry,一个Segment中包含一个HashEntry数组,每个HashEntry又是一个链表结构
+- 元素查询:二次hash,第一次Hash定位到Segment,第二次Hash定位到元素所在的链表的头部锁:Segment分段锁 Segment继承了ReentrantLock,锁定操作的Segment,其他的Segment不受影响,并发度为segment个数,可以通过构造函数指定,数组扩容不会影响其他的segment
+- get方法无需加锁,volatile保证
+jdk8:
+- 数据结构:synchronized+CAS+Node+红黑树,Node的val和next都用volatile修饰,保证可见性
+- 查找,替换,赋值操作都使用CAS
+- 锁:锁链表的head节点,不影响其他元素的读写,锁粒度更细,效率更高,扩容时,阻塞所有的读写操作、并发扩容
+- 读操作无锁:
+  -Node的val和next使用volatile修饰,读写线程对该变量互相可见
+  -数组用volatile修饰,保证扩容时被读线程感知
