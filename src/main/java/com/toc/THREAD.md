@@ -30,7 +30,8 @@
 &emsp;&emsp;<a href="#27">6.4. 相关资料</a>  
 &emsp;<a href="#28">7. spring 中的线程池</a>  
 &emsp;&emsp;<a href="#29">7.1. 异步编程的例子：</a>  
-&emsp;&emsp;<a href="#30">8.0 循环打印ABC的例子：</a>  
+&emsp;&emsp;<a href="#30">8.0 循环打印ABC的例子：</a>
+&emsp;&emsp;<a href="#31">8.1 死锁：</a>
 # <a name="0">java 并发线程相关</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 ## <a name="1">线程状态</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
@@ -609,7 +610,7 @@ private static ThreadLocal<SimpleDateFormat> simpleDateFormat = ThreadLocal.with
   - @EnableAsync：通过在配置类或者Main类上加@EnableAsync开启对异步方法的支持。
   - @Async 可以作用在类上或者方法上，作用在类上代表这个类的所有方法都是异步方法。
 没有自定义Executor, Spring 将创建一个 SimpleAsyncTaskExecutor 并使用它。
-  - ```
+```
     @Bean
       public Executor taskExecutor() {
         // Spring 默认配置是核心线程数大小为1，最大线程容量大小不受限制，队列容量也不受限制。
@@ -622,9 +623,10 @@ private static ThreadLocal<SimpleDateFormat> simpleDateFormat = ThreadLocal.with
         executor.initialize();
         return executor;
       }
-    ```
+```
+    
 ### <a name="29">异步编程的例子：</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
-  - ```
+```
      @Async
       public CompletableFuture<List<String>> completableFutureTask(String start) {
         // 打印日志
@@ -659,7 +661,7 @@ private static ThreadLocal<SimpleDateFormat> simpleDateFormat = ThreadLocal.with
         System.out.println("Elapsed time: " + (System.currentTimeMillis() - start));
         return results.toString();
       }
-    ```
+```
 ### <a name="30">循环打印ABC例子：</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 ```
 public class ABC_Synch {
@@ -699,7 +701,6 @@ public class ABC_Synch {
             }
         }
     }
-
     public static void main(String[] args) throws Exception {
         Object a = new Object();
         Object b = new Object();
@@ -717,3 +718,23 @@ public class ABC_Synch {
     }
 }
 ```
+
+### <a name="30">循环打印ABC例子：</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+所谓死锁，是指多个进程在运行过程中因争夺资源而造成的一种僵局，当进程处于这种僵持状态时，若无外力作用，它们都将无法再向前推进。 因此我们举个例子来描述，如果此时有一个线程A，按照先锁a再获得锁b的的顺序获得锁，而在此同时又有另外一个线程B，按照先锁b再锁a的顺序获得锁。
+
+解决：
+- 1、以确定的顺序获得锁
+如果必须获取多个锁，那么在设计的时候需要充分考虑不同线程之前获得锁的顺序。按照上面的例子，两个线程获得锁的时序图如下
+- 2、超时放弃
+
+当使用synchronized关键词提供的内置锁时，只要线程没有获得锁，那么就会永远等待下去，然而Lock接口提供了boolean tryLock(long time, TimeUnit unit) throws InterruptedException方法，该方法可以按照固定时长等待锁，因此线程可以在获取锁超时以后，主动释放之前已经获得的所有的锁。通过这种方式，也可以很有效地避免死锁。 
+
+- 死锁检测
+1、Jstack命令
+
+jstack是java虚拟机自带的一种堆栈跟踪工具。jstack用于打印出给定的java进程ID或core file或远程调试服务的Java堆栈信息。 Jstack工具可以用于生成java虚拟机当前时刻的线程快照。线程快照是当前java虚拟机内每一条线程正在执行的方法堆栈的集合，生成线程快照的主要目的是定位线程出现长时间停顿的原因，如线程间死锁、死循环、请求外部资源导致的长时间等待等。 线程出现停顿的时候通过jstack来查看各个线程的调用堆栈，就可以知道没有响应的线程到底在后台做什么事情，或者等待什么资源。
+
+2、JConsole工具
+
+Jconsole是JDK自带的监控工具，在JDK/bin目录下可以找到。它用于连接正在运行的本地或者远程的JVM，对运行在Java应用程序的资源消耗和性能进行监控，并画出大量的图表，提供强大的可视化界面。而且本身占用的服务器内存很小，甚至可以说几乎不消耗。
