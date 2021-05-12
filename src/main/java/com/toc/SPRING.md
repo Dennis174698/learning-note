@@ -35,7 +35,8 @@
 &emsp;&emsp;<a href="#32">13.2. @PostConstruct和@PreDestroy</a>  
 &emsp;&emsp;<a href="#33">13.3. Spring 的异常处理</a>  
 &emsp;&emsp;<a href="#34">13.4.  json 数据处理</a>  
-&emsp;&emsp;<a href="#35">13.5.  @Component 和 @Bean 的区别是什么？</a>  
+&emsp;&emsp;<a href="#35">13.5.  @Component 和 @Bean 的区别是什么？</a>
+&emsp;&emsp;<a href="#36">13.6.  BeanFactory和ApplicationContext有什么区别?</a>
 # <a name="0">Spring </a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 ## <a name="1">Spring IOC & AOP</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
@@ -43,10 +44,16 @@
 - IOC 理解
   1. 控制反转：原来在程序中手动创建对象，现在需要什么对象由IOC提供，一个好处就是对象统一管理。
   2. 依赖注入：将对象之间的相互依赖关系交给 IoC 容器来管理，并由 IoC 容器完成对象的注入。简化开发及对象的创建。
+- 没有引入IOC容器之前,对象A依赖于对象B,那么对象A在初始化或者运行到某一点的时候,自己必须主动去创建对象B或者使用已经创建的对象B。无论是创建还是使用对象B,控制权都在自己手上。引入IOC容器之后,对象A与对象B之间失去了直接联系,当对象A运行到需要对象B的时候,IOC容器会
+主动创建一个对象B注入到对象A需要的地方。通过前后的对比,不难看出来:对象A获得依赖对象B的过程,由主动行为变为了被动行为,控制权颠倒过来了,这就是“控制反转”这个名称的由来。
+- 全部对象的控制权全部上缴给“第三方”IOC容器,所以,IOC容器成了整个系统的关键核心,它起到了一种类似“粘合剂”的作用,把系统中的所有对象粘合在一起发挥作用,如果没有这个“粘合剂”,对象与对象之间会彼此失去联系,这就是有人把IOC容器比喻成“粘合剂”的由来。
+- 依赖注入:
+- “获得依赖对象的过程被反转了”。控制被反转之后,获得依赖对象的过程由自身管理变为了由IOC容器主动注入。依赖注入是实现IOC的方法,就是由IOC容器在运行期间,动态地将某种依赖关系注入到对象之中。
   
 ### <a name="3">AOP</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 AOP(Aspect-Oriented Programming:面向切面编程)
   - 能够将那些与业务无关，却为业务模块所共同调用的逻辑或责任（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可拓展性和可维护性。
+  - AOP:将程序中的交叉业务逻辑(比如安全,日志,事务等),封装成一个切面,然后注入到目标对象(具体业务逻辑)中去。AOP可以对某个对象或某些对象的功能进行增强,比如对象中的方法进行增强,可以在执行某个方法之前额外的做一些事情,在某个方法执行之后额外的做一些事情
 
 Spring AOP就是基于动态代理的，如果要代理的对象，实现了某个接口，那么Spring AOP会使用JDK Proxy，去创建代理对象，而对于没有实现接口的对象，就无法使用 JDK Proxy 去进行代理了，这时候Spring AOP会使用Cglib 。
 #### <a name="4">应用场景</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
@@ -527,3 +534,23 @@ https://www.cnblogs.com/yichunguo/p/12122598.html
 作用对象不同: @Component 注解作用于类，而@Bean注解作用于方法。
   - @Component通常是通过类路径扫描来自动侦测以及自动装配到Spring容器中（我们可以使用 @ComponentScan 注解定义要扫描的路径从中找出标识了需要装配的类自动装配到 Spring 的 bean 容器中）。@Bean 注解通常是我们在标有该注解的方法中定义产生这个 bean,@Bean告诉了Spring这是某个类的示例，当我需要用它的时候还给我。
   - @Bean 注解比 Component 注解的自定义性更强，而且很多地方我们只能通过 @Bean 注解来注册bean。比如当我们引用第三方库中的类需要装配到 Spring容器时，则只能通过 @Bean来实现。
+
+### <a name="36">BeanFactory和ApplicationContext有什么区别?</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+BeanFactory和ApplicationContext有什么区别?
+- ApplicationContext是BeanFactory的子接口
+- ApplicationContext提供了更完整的功能:
+- 1. 继承MessageSource,因此支持国际化。
+- 2统一的资源文件访问方式。
+- 3提供在监听器中注册bean的事件。
+- 4同时加载多个配置文件。
+- 5载入多个(有继承关系)上下文 ,使得每一个上下文都专注于一个特定的层次,比如应用的web层。
+
+- BeanFactroy采用的是延迟加载形式来注入Bean的,即只有在使用到某个Bean时(调用getBean()),才对该Bean进行加载实例化。这样,我们就不能发现一些存在的Spring的配置问题。如果Bean的某一个属性没有注入,BeanFacotry加载后,直至第一次使用调用getBean方法
+才会抛出异常。
+- ApplicationContext,它是在容器启动时,一次性创建了所有的Bean。这样,在容器启动时,我
+们就可以发现Spring中存在的配置错误,这样有利于检查所依赖属性是否注入。
+ApplicationContext启动后预载入所有的单实例Bean,通过预载入单实例bean ,确保当你需要的时候,你就不用等待,因为它们已经创建好了。
+
+- 相对于基本的BeanFactory,ApplicationContext 唯一的不足是占用内存空间。当应用程序配置Bean较多时,程序启动较慢。
+- BeanFactory通常以编程的方式被创建,ApplicationContext还能以声明的方式创建,如使用ContextLoader。
+- BeanFactory和ApplicationContext都支持BeanPostProcessor、BeanFactoryPostProcessor的使用,但两者之间的区别是:BeanFactory需要手动注册,而ApplicationContext则是自动注册。
