@@ -33,7 +33,7 @@ Java 的 I/O 大概可以分成以下几类：
 5. 网络操作：Socket
 6. 新的输入/输出：NIO
 
-![avatar](https://github.com/rbmonster/learning-note/blob/master/src/main/java/com/learning/io/picture/inputStreamStructure.jpg)
+![avatar](https://github.com/rbmonster/file-storage/blob/main/learning-note/learning/io/inputStreamStructure.jpg)
 Java I/O 使用了装饰者模式来实现。以 InputStream 为例，
 
 InputStream 是抽象组件；
